@@ -9,17 +9,29 @@
 class User {
     private:
         int id;
+        int age;
+        int weight;
+        int height;
         std::string name;
         std::string email;
-
+        
     public:
-        User(int userId, const std::string& userName, const std::string& userEmail)
-            : id(userId), name(userName), email(userEmail) {}
+        User(int userId, int userAge, int userWeight, int userHeight, const std::string& userName, const std::string& userEmail)
+            : id(userId), age(userAge), weight(userWeight), height(userHeight), name(userName), email(userEmail) {}
 
         // Getters
         
         int getId() const{
             return id;
+        }
+        int getAge() const{
+            return age;
+        }
+        int getWeight() const{
+            return weight;
+        }
+        int getHeight() const{
+            return height;
         }
         std::string getName() const{
             return name;
@@ -29,7 +41,13 @@ class User {
         }
 
         // Setters
-
+        
+        void setWeight(int newWeight) {
+            weight = newWeight;
+        }
+        void setHeight(int newHeight) {
+            height = newHeight;
+        }
         void setName(std::string newName) {
             name = newName;
         }
