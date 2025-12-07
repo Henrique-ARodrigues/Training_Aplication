@@ -10,9 +10,15 @@ Ficha::Ficha(std::string nome)
 
 // Construtor para leitura de arquivo
 Ficha::Ficha(int id, std::string nome)
-   : id(id), nome(nome) {}
+    : id(id), nome(nome)
+{
+    // Correção de IDs 
+    if (id >= proximoId) {
+        proximoId = id + 1;
+    }
+}
 
-// Destrutor (não deletar exercícios, apenas limpar vector)
+// Destrutor (não deletar exercícios)
 Ficha::~Ficha() {
     exercicios.clear();
 }
@@ -24,29 +30,31 @@ void Ficha::adicionarExercicio(Exercicio* exercicio) {
 
 // Exibir ficha completa com exercícios e totais
 void Ficha::exibirFicha() const {
-    std::cout << "\n ======== Ficha #" << id << " ========\n";
-    std::cout << "\n Nome: " << nome << std::endl;
 
-    if(exercicios.empty()) {
-        std::cout << "Nenhum exercício cadastrado. \n";
+    std::cout << "\n======== Ficha #" << id << " ========\n";
+    std::cout << "Nome: " << nome << "\n";
+
+    if (exercicios.empty()) {
+        std::cout << "Nenhum exercício cadastrado.\n";
         return;
-
     }
 
     std::cout << "\n=== Exercícios ===\n";
 
-    for(const auto& e : exercicios ) {
-        e -> exibirDetalhes();
+    for (const auto& e : exercicios) {
+        e->exibirDetalhes();
     }
+
+    std::cout << "\nTempo total: " << calcularTempoTotal() << " min\n";
+    std::cout << "Calorias totais: " << calcularCaloriasTotais() << " kcal\n";
 }
 
 // Calcular tempo total da ficha
 double Ficha::calcularTempoTotal() const {
     double total = 0.0;
 
-    for(const auto& e : exercicios) {
-        e -> calcularTempoEstimado();
-
+    for (const auto& e : exercicios) {
+        total += e->calcularTempoEstimado();
     }
 
     return total;
@@ -55,30 +63,30 @@ double Ficha::calcularTempoTotal() const {
 // Calcular calorias totais da ficha
 double Ficha::calcularCaloriasTotais() const {
     double total = 0.0;
-    
-    for(const auto& e : exercicios) {
-        e -> calcularCaloriasGastas();
 
+    for (const auto& e : exercicios) {
+        total += e->calcularCaloriasGastas();
     }
 
     return total;
 }
 
 // Getters
-int Ficha::getId() const { 
+int Ficha::getId() const {
     return id;
 }
 
-std::string Ficha::getNome() const { 
+std::string Ficha::getNome() const {
     return nome;
 }
 
 const std::vector<Exercicio*>& Ficha::getExercicios() const {
-    static std::vector<Exercicio*> vazio; // Placeholder para compilar
     return exercicios;
 }
 
 // Atualizar próximo ID
 void Ficha::atualizarProximoId(int maiorId) {
-    proximoId = maiorId + 1;
+    if (maiorId >= proximoId) {
+        proximoId = maiorId + 1;
+    }
 }
